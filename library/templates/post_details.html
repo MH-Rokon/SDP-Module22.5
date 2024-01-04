@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div class="col-sm-4 mb-4">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'detail_post' object.id %}" class="text-decoration-none text-dark">{{ object.title }}</a>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">Brands:
+                {% if object.categories.all %}
+                    {% for brand in object.categories.all %}
+                        {{ brand.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </h6>
+            <p class="card-text">{{ object.description }}</p>
+            <p class="card-text">Price: {{ object.borrowing_price}}</p>
+
+            <form style="width: 50%; margin: auto;" method="post" action="{% url 'buy_now' object.id %}">
+                {% csrf_token %}
+                
+            </form>
+        </div>
+    </div>
+    <div>
+        <img src="{{ object.image.url }}" class="card-img-top" alt="{{ object.name }}">
+    </div>
+</div>
+
+{% endblock %}
